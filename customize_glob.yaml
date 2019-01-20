@@ -1,0 +1,4 @@
+"binary_sensor.*_window":
+  device_class: window
+"binary_sensor.*_door":
+  device_class: door

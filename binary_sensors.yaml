@@ -1,0 +1,27 @@
+# - platform: rpi_gpio
+#  bouncetime: 500
+#  ports:
+#    2: Computer Room Window
+#    3: Bonus Room West Window
+#    4: Side Door
+#    5: Front Door
+#    6: Dining Room Window
+#    7: Guest Bedroom Window
+#    8: Guest Bathroom window
+#    9: Utility Room Window
+#    10: Kitchen Window
+#    11: Office Window
+
+
+- platform: mcp23017
+  pins:
+    0: Office Window
+    1: Bonus Room West Window
+    2: Side Door
+    3: Front Door
+    4: Dining Room Window
+    5: Guest Bedroom Window
+    6: Guest Bathroom window
+    7: Utility Room Window
+    8: Kitchen Window
+    9: Office Window

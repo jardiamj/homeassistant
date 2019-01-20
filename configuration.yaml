@@ -1,0 +1,145 @@
+homeassistant:
+  # Name of the location where Home Assistant is running
+  name: Home
+  # Location required to calculate the time the sun rises and sets
+  latitude: 47.8338442
+  longitude: -122.3248267
+  # Impacts weather/sunrise data (altitude above sea level in meters)
+  elevation: 124
+  # metric for Metric, imperial for Imperial
+  unit_system: imperial
+  # Pick yours from here: http://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+  time_zone: America/Los_Angeles
+  # Customization file
+  customize: !include customize.yaml
+  # Customize windows and doors
+  customize_glob: !include customize_glob.yaml
+
+# Show links to resources in log and frontend
+# introduction:
+
+# Enables the frontend
+frontend:
+
+# Lovelace User Interface
+lovelace:
+  mode: yaml
+
+# Enables configuration UI
+config:
+
+http:
+  # Secrets are defined in the file secrets.yaml
+  # api_password: !secret http_password
+  # Uncomment this if you are using SSL/TLS, running in Docker container, etc.
+  ssl_certificate: /etc/letsencrypt/live/jardi.duckdns.org/fullchain.pem
+  ssl_key: /etc/letsencrypt/live/jardi.duckdns.org/privkey.pem
+  base_url: jardi.duckdns.org
+  # base_url: example.duckdns.org:8123
+
+duckdns:
+  domain: jardi
+  access_token: !secret duckdns_token
+# Checks for available updates
+# Note: This component will send some information about your system to
+# the developers to assist with development of Home Assistant.
+# For more information, please see:
+# https://home-assistant.io/blog/2016/10/25/explaining-the-updater/
+updater:
+  # Optional, allows Home Assistant developers to focus on popular components.
+  # include_used_components: true
+
+# Discover some devices automatically
+discovery:
+  ignore:
+    - samsung_tv
+
+# Allows you to issue voice commands from the frontend in enabled browsers
+conversation:
+
+# Enables support for tracking state changes over time
+history:
+
+# View all events in a logbook
+logbook:
+
+# Track devices connected to my router Actiontec (Frontier FIOS)
+device_tracker:
+  - platform: actiontec
+    host: 192.168.1.1
+    username: admin
+    password: !secret router_password
+    new_device_defaults:
+      track_new_devices: false
+  - platform: tile
+    username: jardiamj@gmail.com
+    password: !secret tile_password
+    monitored_variables: PHONE
+
+vacuum:
+  - platform: xiaomi_miio
+    host: 192.168.1.18
+    token: 6b7735525969534273366e3238786948
+
+# Enables a map showing the location of tracked devices
+map:
+
+# Track the sun
+sun:
+
+# Weather prediction
+sensor:
+  - platform: yr
+  # check for ssl certificate expiration
+  - platform: command_line
+    name: SSL cert expiry
+    unit_of_measurement: days
+    scan_interval: 10800
+    command: "ssl-cert-check -b -c /etc/letsencrypt/live/jardi.duckdns.org/cert.pem | awk '{ print $NF }'"
+
+# Nest Components
+nest:
+  client_id: 3d1cccb7-a4c2-4869-86e5-3b4b0313310c
+  client_secret: !secret nest_secret
+  sensors:
+    monitored_conditions:
+      #- 'eta'
+      - 'humidity'
+      #- 'operation_mode'
+      #- 'temperature'
+      - 'target'
+  binary_sensors:
+    monitored_conditions:
+      - 'away'
+      #- 'online'
+      - 'fan'
+      #- 'is_locked'
+      - 'has_leaf'
+      - 'motion_detected'
+
+# Binary sensors
+binary_sensor: !include binary_sensors.yaml
+
+# Switches
+switch:
+  - platform: tplink
+    host: 192.168.1.4
+
+# Samsung TV
+media_player:
+  - platform: samsungtv
+    host: 192.168.1.7
+    port: 8001
+    mac: e4:7d:bd:75:b7:40
+    name: Living Room TV
+
+# Text to speech
+tts:
+  - platform: google
+
+# Cloud
+cloud:
+
+group: !include groups.yaml
+automation: !include automations.yaml
+script: !include scripts.yaml

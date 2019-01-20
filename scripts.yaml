@@ -1,0 +1,13 @@
+play_sound:
+  sequence:
+  - entity_id: media_player.living_room_speaker
+    service: media_player.turn_on
+  - data:
+      volume_level: 0.5
+    entity_id: media_player.living_room_speaker
+    service: media_player.volume_set
+  - data:
+      entity_id: media_player.living_room_speaker
+      media_content_id: https://m.soundcloud.com/kodylee21/star-wars-the-imperial-march
+      media_content_type: audio/mp4
+    service: media_player.play_media

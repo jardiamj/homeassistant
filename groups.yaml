@@ -1,0 +1,33 @@
+#Groups
+windows:
+  name: Windows
+  entities:
+    - binary_sensor.bonus_room_west_window
+    - binary_sensor.computer_room_window
+    - binary_sensor.dining_room_window
+    - binary_sensor.guest_bathroom_window
+    - binary_sensor.guest_bedroom_window
+    - binary_sensor.kitchen_window
+    - binary_sensor.office_window
+    - binary_sensor.utility_room_window
+doors:
+  name: Doors
+  entities:
+    - binary_sensor.front_door
+    - binary_sensor.side_door
+presence_detection:
+  name: Presence Detection
+  entities:
+    - device_tracker.jardi_phone
+    - device_tracker.juni_phone
+    - device_tracker.tile_pd7e88d3a32722c2b6265577628f9d5b5
+    - device_tracker.tile_p30b8d726f9b0284fbcff304ee46397e6
+nest_thermostat:
+  name: Thermostat
+  entities:
+    - climate.living_room
+    - sensor.living_room_thermostat_target
+    - sensor.living_room_thermostat_humidity
+    - binary_sensor.living_room_thermostat_fan
+    - binary_sensor.living_room_thermostat_has_leaf
+    - binary_sensor.mansion_away

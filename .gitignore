@@ -1,0 +1,15 @@
+*.~
+*.pyc
+secrets.yaml
+deps/
+www/
+tts/
+.cloud
+.HA_VERSION
+*.log
+*.db
+.jardiamjgmailcom.tile.conf
+known_devices.yaml
+.storage
+.tile.conf
+.uuid
