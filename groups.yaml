@@ -15,6 +15,7 @@ doors:
   entities:
     - binary_sensor.front_door
     - binary_sensor.side_door
+    - binary_sensor.dining_room_door
 presence_detection:
   name: Presence Detection
   entities:

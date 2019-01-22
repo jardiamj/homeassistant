@@ -21,9 +21,11 @@ _LOGGER = logging.getLogger(__name__)
 CONF_INVERT_LOGIC = 'invert_logic'
 CONF_PINS = 'pins'
 CONF_PULL_MODE = 'pull_mode'
+CONF_I2C_ADDRESS = 'i2c_address'
 
 DEFAULT_INVERT_LOGIC = False
 DEFAULT_PULL_MODE = 'UP'
+DEFAULT_I2C_ADDRESS= '0x20'
 
 _SENSORS_SCHEMA = vol.Schema({
     cv.positive_int: cv.string,
@@ -33,6 +35,7 @@ PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend({
     vol.Required(CONF_PINS): _SENSORS_SCHEMA,
     vol.Optional(CONF_INVERT_LOGIC, default=DEFAULT_INVERT_LOGIC): cv.boolean,
     vol.Optional(CONF_PULL_MODE, default=DEFAULT_PULL_MODE): cv.string,
+    vol.Optional(CONF_I2C_ADDRESS, default=DEFAULT_I2C_ADDRESS): vol.Coerce(int),
 })
 
 
@@ -42,11 +45,13 @@ async def async_setup_platform(hass, config, async_add_devices,
     import board
     import busio
     import adafruit_mcp230xx
-    i2c = busio.I2C(board.SCL, board.SDA)
-    mcp = adafruit_mcp230xx.MCP23017(i2c)
     
     pull_mode = config.get(CONF_PULL_MODE)
     invert_logic = config.get(CONF_INVERT_LOGIC)
+    i2c_address = config.get(CONF_I2C_ADDRESS)
+        
+    i2c = busio.I2C(board.SCL, board.SDA)
+    mcp = adafruit_mcp230xx.MCP23017(i2c, address=i2c_address)
     
     binary_sensors = []
     pins = config.get(CONF_PINS)
@@ -85,8 +90,7 @@ class mcp23017BinarySensor(BinarySensorDevice):
     @property
     def is_on(self):
         """Return the state of the entity."""
-        return self._state != self._invert_logic
-        
+        return self._state != self._invert_logic    
        
     async def async_update(self):
         """Update the GPIO state."""
