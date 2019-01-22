@@ -14,8 +14,9 @@
 
 
 - platform: mcp23017
+  scan_interval: 1
   pins:
-    0: Office Window
+    0: Computer Room Window
     1: Bonus Room West Window
     2: Side Door
     3: Front Door
