@@ -23,7 +23,7 @@
     3: Front Door
     4: Dining Room Window
     5: Guest Bedroom Window
-    6: Guest Bathroom window
+    6: Guest Bath window
     7: Utility Room Window
     8: Kitchen Window
     9: Office Window
@@ -33,3 +33,14 @@
   scan_interval: 1
   pins:
     0: Dining Room Door
+    1: Master Bedroom North Window
+    2: Master Bath East Window
+    3: Master Bath Entry Door
+    4: Master Bath South Window
+    5: Living West Left Window
+    6: Living West Right Window
+    7: Living North Left Window
+    8: Living North Right Window
+    9: Bonus Room North Left Window
+    10: Bonus Room North Right Window
+    

@@ -34,7 +34,7 @@ http:
   # Uncomment this if you are using SSL/TLS, running in Docker container, etc.
   ssl_certificate: /etc/letsencrypt/live/jardi.duckdns.org/fullchain.pem
   ssl_key: /etc/letsencrypt/live/jardi.duckdns.org/privkey.pem
-  base_url: jardi.duckdns.org
+  base_url: !secret base_url 
   # base_url: example.duckdns.org:8123
 
 duckdns:
@@ -88,14 +88,7 @@ map:
 sun:
 
 # Weather prediction
-sensor:
-  - platform: yr
-  # check for ssl certificate expiration
-  - platform: command_line
-    name: SSL cert expiry
-    unit_of_measurement: days
-    scan_interval: 10800
-    command: "ssl-cert-check -b -c /etc/letsencrypt/live/jardi.duckdns.org/cert.pem | awk '{ print $NF }'"
+sensor: !include sensors.yaml
 
 # Nest Components
 nest:

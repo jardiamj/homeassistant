@@ -5,44 +5,42 @@
 title: Home
 views:
   - title: Home
+    # theme: dark-mode
     cards:
-      - type: entities
-        title: all devices
-        show_header_toggle: true
-        entities:
-          - device_tracker.jardi_phone
-          - device_tracker.tile_pd7e88d3a32722c2b6265577628f9d5b5
-          - device_tracker.juni_phone
-          - device_tracker.tile_p30b8d726f9b0284fbcff304ee46397e6
+      # Door sensors
       - type: entities
         title: Doors
-        show_header_toggle: true
+        show_header_toggle: false
         entities:
           - binary_sensor.side_door
           - binary_sensor.front_door
+      # Presence Detection
       - type: entities
         title: Presence Detection
-        show_header_toggle: true
+        show_header_toggle: false
         entities:
           - device_tracker.jardi_phone
           - device_tracker.tile_pd7e88d3a32722c2b6265577628f9d5b5
           - device_tracker.juni_phone
           - device_tracker.tile_p30b8d726f9b0284fbcff304ee46397e6
+      # Switches
       - type: entities
         title: all switches
         show_header_toggle: true
         entities:
           - switch.front_porch
+      # Automations
       - type: entities
         title: all automations
         show_header_toggle: true
         entities:
           - automation.front_door_open
-          - automation.arriving_home__turn_on_light
-          - automation.open_front_door__turn_on_light
+          - automation.arriving_home_turn_on_light
+          - automation.open_front_door_turn_on_light
+      # Windows
       - type: entities
         title: Windows
-        show_header_toggle: true
+        show_header_toggle: false
         entities:
           - binary_sensor.office_window
           - binary_sensor.computer_room_window
@@ -50,18 +48,20 @@ views:
           - binary_sensor.dining_room_window
           - binary_sensor.bonus_room_west_window
           - binary_sensor.utility_room_window
-          - binary_sensor.guest_bathroom_window
+          - binary_sensor.guest_bath_window
           - binary_sensor.kitchen_window
+      # Screipts
       - type: entities
         title: all scripts
         show_header_toggle: true
         entities:
           - script.play_sound
+      # Thermostat
       - type: thermostat
         entity: climate.living_room
       - type: entities
         title: Thermostat
-        show_header_toggle: true
+        show_header_toggle: false
         entities:
          # - climate.living_room
           - sensor.living_room_thermostat_humidity
