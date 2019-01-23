@@ -20,7 +20,8 @@ homeassistant:
 
 # Enables the frontend
 frontend:
-
+  themes: !include themes.yaml
+  
 # Lovelace User Interface
 lovelace:
   mode: yaml
