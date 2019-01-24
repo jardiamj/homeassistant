@@ -77,7 +77,7 @@
       value_template: 'Filter: {{ states.vacuum.xiaomi_vacuum_cleaner.attributes.filter_left }}'
       icon_template: 'mdi:screwdriver'
     vacuum_sensordirtyleft:
-      friendly_name: Replace filter
+      friendly_name: Clean sensor
       unit_of_measurement: 'h'
       entity_id:
         - vacuum.xiaomi_vacuum_cleaner

@@ -10,7 +10,6 @@ windows:
     - binary_sensor.kitchen_window
     - binary_sensor.office_window
     - binary_sensor.utility_room_window
-    
     - binary_sensor.master_bedroom_north_window
     - binary_sensor.master_bath_east_window
     - binary_sensor.master_bath_south_window
