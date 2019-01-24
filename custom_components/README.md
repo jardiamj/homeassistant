@@ -43,7 +43,7 @@ $ wget https://github.com/jardiamj/homeassistant/blob/master/custom_components/b
 ```
 To use the mcp23017 binary sensor in your installation, add the following to your configuration.yaml file:
 
-```
+```yaml
 # Example configuration.yaml entry
 binary_sensor:
   - platform: mcp23017
