@@ -6,6 +6,117 @@
   scan_interval: 10800
   command: "ssl-cert-check -b -c /etc/letsencrypt/live/jardi.duckdns.org/cert.pem | awk '{ print $NF }'"
 
+##############################################################################
+##         Weather Station Data                                             ##
+##############################################################################
+
+- platform: rest
+  resource: http://dell-inspiron/weewx/daily.json
+  name: Weather Station
+  json_attributes:
+    - current
+  value_template: '{{ value_json.hardware }}'
+
+- platform: template
+  sensors:
+    outside_temperature:
+      friendly_name: Outside Temperature
+      entity_id:
+        - sensor.weather_station
+      value_template: "{{ states.sensor.weather_station.attributes.current['outTemp'] }}"
+      unit_of_measurement: '°F'
+
+    heat_index:
+      friendly_name: Heat Index
+      entity_id:
+        - sensor.weather_station
+      value_template: "{{ states.sensor.weather_station.attributes.current['heatIndex'] }}"
+      unit_of_measurement: '°F'
+      icon_template: 'mdi:thermometer-lines'
+
+    wind_chill:
+      friendly_name: Wind Chill
+      entity_id:
+        - sensor.weather_station
+      value_template: "{{ states.sensor.weather_station.attributes.current['windchill'] }}"
+      unit_of_measurement: '°F'
+      icon_template: 'mdi:thermometer-lines'
+
+    dew_point:
+      friendly_name: Dew Point
+      entity_id:
+        - sensor.weather_station
+      value_template: "{{ states.sensor.weather_station.attributes.current['dewpoint'] }}"
+      unit_of_measurement: '°F'
+      icon_template: 'mdi:oil-temperature'
+
+    humidity:
+      friendly_name: Humidity
+      entity_id:
+        - sensor.weather_station
+      value_template: "{{ states.sensor.weather_station.attributes.current['humidity'] }}"
+      unit_of_measurement: '%'
+      icon_template: 'mdi:water-percent'
+
+    barometer:
+      friendly_name: Barometer
+      entity_id:
+        - sensor.weather_station
+      value_template: "{{ states.sensor.weather_station.attributes.current['barometer'] }}"
+      unit_of_measurement: 'inHg'
+      icon_template: 'mdi:gauge'
+
+    barometer_trend:
+      friendly_name: Barometer Trend
+      entity_id:
+        - sensor.weather_station
+      value_template: >
+        {% set trend_data = states.sensor.weather_station.attributes.current['barometerTrendData'] %}
+        {% set trend_delta = states.sensor.weather_station.attributes.current['barometerTrendDelta'] %}
+        {{ trend_data + ' (' + trend_delta + ')' }}
+      unit_of_measurement: 'inHg'
+      icon_template: >-
+        {% set val = states.sensor.weather_station.attributes.current['barometerTrendData'] %}
+        {% if val[0] == '-'  %}
+            mdi:arrow-down-bold
+          {% else %}
+            mdi:arrow-up-bold
+          {% endif %}
+    
+    wind:
+      friendly_name: Wind
+      entity_id:
+        - sensor.weather_station
+      value_template: >
+        {% set speed = states.sensor.weather_station.attributes.current['windSpeed'] %}
+        {% set direction = states.sensor.weather_station.attributes.current['windDirText'] %}
+        {{ speed + ' (' + direction + ')' }}
+      unit_of_measurement: 'mph'
+      icon_template: 'mdi:weather-windy'
+
+    rain_rate:
+      friendly_name: Rain Rate
+      entity_id:
+        - sensor.weather_station
+      value_template: "{{ states.sensor.weather_station.attributes.current['rainRate'] }}"
+      unit_of_measurement: 'in/hr'
+      icon_template: 'mdi:water'
+
+    rain_today:
+      friendly_name: Rain Today
+      entity_id:
+        - sensor.weather_station
+      value_template: "{{ states.sensor.weather_station.attributes.current['rainToday'] }}"
+      unit_of_measurement: 'in'
+      icon_template: 'mdi:cup-water'
+
+    utility_room_temperature:
+      friendly_name: Utility Room Temperature
+      entity_id:
+        - sensor.weather_station
+      value_template: "{{ states.sensor.weather_station.attributes.current['insideTemp'] }}"
+      unit_of_measurement: '°F'
+
 # Template sensors for Xiaomi Vacuum
 - platform: template
   sensors:
@@ -99,3 +210,21 @@
       value_template: 'Operation'
     vacuum_accessories:
       value_template: 'Maintenance'
+
+# Template sensor for Garbage collection
+- platform: template
+  sensors:
+    garbage_main:
+      friendly_name: Garbage
+      value_template: "{{ states.calendar.trash_this_week.attributes.all_tasks[0] }}"
+      icon_template: mdi:delete-empty
+    garbage_byweekly:
+      friendly_name: Garbage Biweekly
+      value_template: "{{ states.calendar.trash_this_week.attributes.all_tasks[1] }}"
+      icon_template: >
+        {% set val = states.calendar.trash_this_week.attributes.all_tasks[1] %}
+        {% if val == 'Recycling' %}
+          mdi:recycle
+        {% else %}
+          mdi:food-apple
+        {% endif %}

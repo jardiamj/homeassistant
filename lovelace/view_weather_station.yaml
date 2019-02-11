@@ -1,0 +1,18 @@
+title: Weather Station
+icon: 'mdi:weather-partlycloudy'
+cards:
+  - type: entities
+    show_header_toggle: false
+    title: Weather Station
+    entities:
+      - sensor.outside_temperature
+      - sensor.heat_index
+      - sensor.wind_chill
+      - sensor.dew_point
+      - sensor.humidity
+      - sensor.barometer
+      - sensor.barometer_trend
+      - sensor.wind
+      - sensor.rain_rate
+      - sensor.rain_today
+      - sensor.utility_room_temperature

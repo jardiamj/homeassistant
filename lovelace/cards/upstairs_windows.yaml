@@ -1,0 +1,16 @@
+# Doors
+# Windows
+type: entities
+title: Windows
+show_header_toggle: false
+entities:
+  - binary_sensor.dining_room_window
+  - binary_sensor.guest_bath_window
+  - binary_sensor.kitchen_window
+  - binary_sensor.master_bedroom_north_window
+  - binary_sensor.master_bath_east_window
+  - binary_sensor.master_bath_south_window
+  - binary_sensor.living_west_left_window
+  - binary_sensor.living_west_right_window
+  - binary_sensor.living_north_left_window
+  - binary_sensor.living_north_right_window

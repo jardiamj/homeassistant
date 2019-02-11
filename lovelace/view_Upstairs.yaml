@@ -1,0 +1,46 @@
+title: Upstairs
+cards:
+  # Doors Sensors
+  - type: entities
+    title: Doors
+    show_header_toggle: false
+    entities:
+      - binary_sensor.front_door
+      - binary_sensor.dining_room_door
+      - binary_sensor.master_bath_entry_door
+  # Window sensors
+  - !include cards/upstairs_windows.yaml
+  # Thermostat
+  - type: thermostat
+    entity: climate.living_room
+  - type: entities
+    title: Thermostat
+    show_header_toggle: false
+    entities:
+      # - climate.living_room
+      - sensor.living_room_thermostat_humidity
+      - binary_sensor.living_room_thermostat_has_leaf
+      - binary_sensor.living_room_thermostat_fan
+      - binary_sensor.mansion_away
+      - sensor.living_room_thermostat_target
+  # Switches
+  - type: entities
+    title: Switches
+    show_header_toggle: true
+    entities:
+      - switch.front_porch
+  # Google Home Mini
+  - type: media-control
+    entity: media_player.living_room_speaker
+  # Presence Detection
+  - type: entities
+    title: Presence Detection
+    show_header_toggle: false
+    entities:
+      - device_tracker.jardi_phone
+      - device_tracker.tile_pd7e88d3a32722c2b6265577628f9d5b5
+      - device_tracker.juni_phone
+      - device_tracker.tile_p30b8d726f9b0284fbcff304ee46397e6
+      
+  # Vacuum Cleaner
+  - !include cards/vacuum.yaml

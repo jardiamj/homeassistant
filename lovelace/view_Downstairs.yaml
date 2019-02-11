@@ -1,0 +1,24 @@
+# Downstairs Area
+title: Downstairs
+cards:
+  # Door Sensors
+  - type: entities
+    title: Doors
+    show_header_toggle: false
+    entities:
+      - binary_sensor.side_door
+  # Windows Sensors
+  - type: entities
+    title: Windows
+    show_header_toggle: false
+    entities:
+      - binary_sensor.office_window
+      - binary_sensor.computer_room_window
+      - binary_sensor.guest_bedroom_window
+      - binary_sensor.bonus_room_west_window
+      - binary_sensor.utility_room_window
+      - binary_sensor.bonus_room_north_left_window
+      - binary_sensor.bonus_room_north_right_window 
+  # TV
+  - type: media-control
+    entity: media_player.living_room_tv

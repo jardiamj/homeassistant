@@ -1,0 +1,232 @@
+type: vertical-stack
+cards:
+  # Picture Elements Card
+  - type: picture-elements
+    image: /local/vacuum_gray.jpeg
+    elements:
+    # Icons
+    - type: icon
+      icon: mdi:bell-ring
+      tap_action:
+        action: call-service
+        service: vacuum.locate
+        service_data:
+          entity_id: vacuum.xiaomi_vacuum_cleaner
+      style:
+        top: 90%
+        left: 85%
+        --iron-icon-fill-color: "#1ABA92"
+    - type: icon
+      icon: mdi:home
+      tap_action:
+        action: call-service
+        service: vacuum.return_to_base
+        service_data:
+          entity_id: vacuum.xiaomi_vacuum_cleaner
+      style:
+        top: 90%
+        left: 70%
+        --iron-icon-fill-color: "#1ABA92"
+    - type: icon
+      icon: mdi:crosshairs
+      tap_action:
+        action: call-service
+        service: vacuum.clean_spot
+        service_data:
+          entity_id: vacuum.xiaomi_vacuum_cleaner
+      style:
+        top: 90%
+        left: 55%
+        --iron-icon-fill-color: "#1ABA92"
+    - type: icon
+      icon: mdi:play
+      tap_action:
+        action: call-service
+        service: vacuum.start
+        service_data:
+          entity_id: vacuum.xiaomi_vacuum_cleaner
+      style:
+        top: 90%
+        left: 40%
+        --iron-icon-fill-color: "#1ABA92"
+    - type: icon
+      icon: mdi:pause
+      tap_action:
+        action: call-service
+        service: vacuum.pause
+        service_data:
+          entity_id: vacuum.xiaomi_vacuum_cleaner
+      style:
+        top: 90%
+        left: 25%
+        --iron-icon-fill-color: "#1ABA92"
+    - type: icon
+      icon: mdi:stop
+      tap_action:
+        action: call-service
+        service: vacuum.stop
+        service_data:
+          entity_id: vacuum.xiaomi_vacuum_cleaner
+      style:
+        top: 90%
+        left: 10%
+        --iron-icon-fill-color: "#1ABA92"
+    #State Label
+    - type: state-label
+      entity: sensor.vacuum_operation
+      style:
+        top: 10%
+        left: 1%
+        color: rgb(255, 255, 255)
+        transform: translate(0%,-50%)
+        pointer-events: none
+        font-family: Trebuchet MS
+        font-size: 90%
+        font-weight: bold
+        border-color: rgb(34, 154, 210)
+        background-color: "#1ABA92"
+        border-radius: 6px
+    - type: state-label
+      entity: sensor.vacuum_accessories
+      style:
+        top: 10%
+        right: 1%
+        color: rgb(255, 255, 255)
+        transform: translate(0%,-50%)
+        pointer-events: none
+        font-family: Trebuchet MS
+        font-size: 90%
+        font-weight: bold
+        border-color: rgb(34, 154, 210)
+        background-color: "#1ABA92"
+        border-radius: 6px
+    - type: state-label
+      tap_action: more-info
+      entity: vacuum.xiaomi_vacuum_cleaner
+      style:
+        top: 14%
+        right: 38%
+        color: rgb(255, 255, 255)
+        transform: translate(0%,-50%)
+        font-family: Trebuchet MS
+        font-size: 150%
+        font-weight: bold
+        border-color: rgb(34, 154, 210)
+        border-radius: 6px
+        background-color: '#cccccc'
+    - type: state-label
+      entity: sensor.vacuum_cleanmainbrush
+      style:
+        top: 35%
+        right: 1%
+        color: '#8499ba'
+        transform: translate(0%,-50%)
+        pointer-events: none
+        font-family: Trebuchet MS
+        font-size: 76%
+        font-weight: bold
+        border-right-style: solid
+        border-color: rgb(34, 154, 210)
+    - type: state-label
+      entity: sensor.vacuum_cleansidebrush
+      style:
+        top: 45%
+        right: 1%
+        color: '#8499ba'
+        transform: translate(0%,-50%)
+        pointer-events: none
+        font-family: Trebuchet MS
+        font-size: 76%
+        font-weight: bold
+        border-right-style: solid
+        border-color: rgb(34, 154, 210)
+    - type: state-label
+      entity: sensor.vacuum_cleanfilter
+      style:
+        top: 55%
+        right: 1%
+        color: '#8499ba'
+        transform: translate(0%,-50%)
+        pointer-events: none
+        font-family: Trebuchet MS
+        font-size: 76%
+        font-weight: bold
+        border-right-style: solid
+        border-color: rgb(34, 154, 210)
+        opacity: 0.8
+    - type: state-label
+      entity: sensor.vacuum_sensordirtyleft
+      style:
+        top: 65%
+        right: 1%
+        color: '#8499ba'
+        transform: translate(0%,-50%)
+        pointer-events: none
+        font-family: Trebuchet MS
+        font-size: 76%
+        font-weight: bold
+        border-right-style: solid
+        border-color: rgb(34, 154, 210)
+    - type: state-label
+      entity: sensor.vacuum_status
+      style:
+        top: 40%
+        left: 1%
+        color: '#8499ba'
+        transform: translate(0%,-50%)
+        pointer-events: none
+        font-family: Trebuchet MS
+        font-size: 80%
+        font-weight: bold
+        border-left-style: solid
+        border-color: '#3090C7'
+    - type: state-label
+      entity: sensor.vacuum_battery
+      style:
+        top: 50%
+        left: 1%
+        color: '#8499ba'
+        transform: translate(0%,-50%)
+        pointer-events: none
+        font-family: Trebuchet MS
+        font-size: 80%
+        font-weight: bold
+        border-left-style: solid
+        border-color: rgb(34, 154, 210)
+    - type: state-label
+      entity: sensor.vacuum_fan_speed
+      style:
+        top: 60%
+        left: 1%
+        color: '#8499ba'
+        transform: translate(0%,-50%)
+        pointer-events: none
+        font-family: Trebuchet MS
+        font-size: 80%
+        font-weight: bold
+        border-left-style: solid
+        border-color: rgb(34, 154, 210)
+    - type: state-label
+      entity: sensor.vacuum_cleaned_area
+      prefix: "Area:"
+      style:
+        top: 79%
+        left: 31%
+        color: '#8499ba'
+        transform: translate(0%,-50%)
+        pointer-events: none
+        font-family: Trebuchet MS
+        font-size: 80%
+        font-weight: bold
+    - type: state-label
+      entity: sensor.vacuum_cleaning_time
+      prefix: "Time:"
+      style:
+        top: 79%
+        left: 51%
+        color: '#8499ba'
+        transform: translate(0%,-50%)
+        pointer-events: none
+        font-family: Trebuchet MS
+        font-size: 80%
+        font-weight: bold

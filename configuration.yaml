@@ -15,6 +15,9 @@ homeassistant:
   # Customize windows and doors
   customize_glob: !include customize_glob.yaml
 
+# System health
+system_health:
+
 # Show links to resources in log and frontend
 # introduction:
 
@@ -76,10 +79,21 @@ device_tracker:
     password: !secret tile_password
     monitored_variables: PHONE
 
+# Robot Vacuum cleaner
 vacuum:
   - platform: xiaomi_miio
     host: 192.168.1.18
-    token: 6b7735525969534273366e3238786948
+    token: !secret xiaomi_vacuum_token 
+
+# Set up for todoist list
+calendar:
+  - platform: todoist
+    token: !secret todoist_token 
+    custom_projects:
+      - name: 'Trash This Week'
+        due_date_days: 7
+        include_projects:
+          - Trash Schedule
 
 # Enables a map showing the location of tracked devices
 map:
@@ -96,10 +110,10 @@ nest:
   client_secret: !secret nest_secret
   sensors:
     monitored_conditions:
-      #- 'eta'
+      - 'eta'
       - 'humidity'
-      #- 'operation_mode'
-      #- 'temperature'
+      - 'operation_mode'
+      - 'temperature'
       - 'target'
   binary_sensors:
     monitored_conditions:
