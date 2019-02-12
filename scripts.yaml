@@ -11,3 +11,14 @@ play_sound:
       media_content_id: https://m.soundcloud.com/kodylee21/star-wars-the-imperial-march
       media_content_type: audio/mp4
     service: media_player.play_media
+    
+send_notification:
+  alias: Send Notification
+  sequence:
+    - service: notify.jardi_smtp
+      data:
+        title: 'Home Assistant Notification Test'
+        message: 'This is a Notification Test for Home Assistant'
+        data:
+          images:
+            - /home/homeassistant/.homeassistant/www/vacuum_gray.jpeg

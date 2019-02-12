@@ -32,9 +32,11 @@ views:
           - automation.front_door_open
           - automation.arriving_home_turn_on_light
           - automation.open_front_door_turn_on_light
+          - automation.notify_if_door_window_opened_for_2_minutes
       # Scripts
       - type: entities
         title: Scripts
         show_header_toggle: true
         entities:
           - script.play_sound
+          - script.send_notification

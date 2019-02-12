@@ -36,8 +36,8 @@ http:
   # Secrets are defined in the file secrets.yaml
   # api_password: !secret http_password
   # Uncomment this if you are using SSL/TLS, running in Docker container, etc.
-  ssl_certificate: /etc/letsencrypt/live/jardi.duckdns.org/fullchain.pem
-  ssl_key: /etc/letsencrypt/live/jardi.duckdns.org/privkey.pem
+  ssl_certificate: !secret ssl_certificate
+  ssl_key: !secret ssl_key
   base_url: !secret base_url 
 
 duckdns:
@@ -51,6 +51,21 @@ duckdns:
 updater:
   # Optional, allows Home Assistant developers to focus on popular components.
   # include_used_components: true
+
+notify:
+  - name: jardi_smtp
+    platform: smtp
+    server: smtp.gmail.com
+    port: 587
+    timeout: 15
+    sender: !secret email
+    encryption: starttls
+    username: !secret email
+    password: !secret gmail_password
+    recipient:
+      - !secret wife_phone
+      - !secret jardi_phone
+    sender_name: My Home Assistant
 
 # Discover some devices automatically
 discovery:
@@ -110,10 +125,10 @@ nest:
   client_secret: !secret nest_secret
   sensors:
     monitored_conditions:
-      - 'eta'
+      #- 'eta'
       - 'humidity'
-      - 'operation_mode'
-      - 'temperature'
+      #- 'operation_mode'
+      #- 'temperature'
       - 'target'
   binary_sensors:
     monitored_conditions:

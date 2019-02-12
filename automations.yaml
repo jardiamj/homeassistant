@@ -29,6 +29,25 @@
 #          Welcome home
 #          {{ trigger.to_state.attributes.friendly_name }}!
 
+- alias: 'Notify if door/window opened for 3 minutes'
+  trigger:
+    - platform: state
+      entity_id: group.doors, group.windows
+      to: 'on'
+      for:
+        hours: 0
+        minutes: 3
+        seconds: 0
+  action:
+    - service: notify.jardi_smtp
+      data_template:
+        title: 'Door/Window Opened'
+        message: >-
+          {% for entity in trigger.to_state.attributes.entity_id %}
+            {% if states(entity ) == 'on' %}
+              {{ state_attr(entity , 'friendly_name') }} has been opened for 3 minutes
+            {% endif %}
+          {% endfor %}
 
 - alias: 'Open Front Door - Turn on Light'
   trigger:
@@ -46,7 +65,7 @@
   action:
     - service: homeassistant.turn_on
       entity_id: switch.front_porch
-    - delay: '00:02:00'
+    - delay: '00:05:00'
     - service: homeassistant.turn_off
       entity_id: switch.front_porch
 
