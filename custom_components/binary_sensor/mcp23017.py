@@ -25,7 +25,7 @@ CONF_I2C_ADDRESS = 'i2c_address'
 
 DEFAULT_INVERT_LOGIC = False
 DEFAULT_PULL_MODE = 'UP'
-DEFAULT_I2C_ADDRESS= '0x20'
+DEFAULT_I2C_ADDRESS= 0x20
 
 _SENSORS_SCHEMA = vol.Schema({
     cv.positive_int: cv.string,
