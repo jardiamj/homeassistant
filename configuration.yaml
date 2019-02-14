@@ -90,7 +90,7 @@ device_tracker:
     new_device_defaults:
       track_new_devices: false
   - platform: tile
-    username: jardiamj@gmail.com
+    username: !secret email
     password: !secret tile_password
     monitored_variables: PHONE
 
