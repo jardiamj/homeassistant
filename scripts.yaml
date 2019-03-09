@@ -15,10 +15,5 @@ play_sound:
 send_notification:
   alias: Send Notification
   sequence:
-    - service: notify.jardi_smtp
-      data:
-        title: 'Home Assistant Notification Test'
-        message: 'This is a Notification Test for Home Assistant'
-        data:
-          images:
-            - /home/homeassistant/.homeassistant/www/vacuum_gray.jpeg
+    - service: switch.turn_on
+      entity_id: switch.front_porch

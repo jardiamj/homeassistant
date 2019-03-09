@@ -20,8 +20,11 @@
     - service: media_player.play_media
       entity_id: media_player.living_room_speaker
       data:
-        media_content_id: http://91.221.151.155/listen.mp3
+        media_content_id: http://users.du.se/~dbe/mp3/Star%20Wars%20Trilogy%20%28Original%20Motion%20Picture%20Soundtrack%29/Star%20Wars%20Episode%20V%20-%20The%20Empire%20Strikes%20Back/Disc%202/John%20Williams%20-%20S.W.%20Ep.%20V%20-%20CD%202%20-%2001%20-%20The%20Imperial%20March.mp3
         media_content_type: 'audio/mp4'
+    - delay: '00:00:15'
+    - service: media_player.media_stop
+      entity_id: media_player.living_room_speaker
 #    - service: tts.google_say
 #      entity_id: media_player.living_room_speaker
 #      data_template:
@@ -29,13 +32,13 @@
 #          Welcome home
 #          {{ trigger.to_state.attributes.friendly_name }}!
 
-- alias: 'Notify if door/window opened for 3 minutes'
+- alias: 'Notify if door/window left open'
   trigger:
     - platform: state
       entity_id: group.doors, group.windows
       to: 'on'
       for:
-        minutes: 3
+        minutes: 10
   action:
     - service: notify.jardi_smtp
       data_template:
@@ -43,16 +46,16 @@
         message: >-
           {% for entity in trigger.to_state.attributes.entity_id %}
             {% if states(entity ) == 'on' %}
-              {{ state_attr(entity , 'friendly_name') }} has been opened for 3 minutes
+              {{ state_attr(entity , 'friendly_name') }} has been opened for 10 minutes
             {% endif %}
           {% endfor %}
 
 - alias: 'Open Front Door - Turn on Light'
   trigger:
-    - platform: state
-      entity_id: binary_sensor.front_door
-      from: 'off'
-      to: 'on'
+    platform: state
+    entity_id: binary_sensor.front_door
+    from: 'off'
+    to: 'on'
   condition:
     - condition: state
       entity_id: sun.sun
@@ -61,10 +64,10 @@
       entity_id: switch.front_porch
       state: 'off'
   action:
-    - service: homeassistant.turn_on
+    - service: switch.turn_on
       entity_id: switch.front_porch
     - delay: '00:05:00'
-    - service: homeassistant.turn_off
+    - service: switch.turn_off
       entity_id: switch.front_porch
 
 - alias: 'Arriving Home - Turn on Light'
@@ -81,8 +84,26 @@
       entity_id: switch.front_porch
       state: 'off'
   action:
-    - service: homeassistant.turn_on
+    - service: switch.turn_off
       entity_id: switch.front_porch
     - delay: '00:10:00'
-    - service: homeassistant.turn_off
+    - service: switch.turn_off
       entity_id: switch.front_porch
+
+- alias: Front Light On Before Sunset
+  trigger:
+    platform: sun
+    event: sunset
+    offset: '-00:30:00'
+  action:
+    service: switch.turn_on
+    entity_id: switch.front_porch
+
+- alias: Front Light Off At Sunrise
+  trigger:
+    platform: sun
+    event: sunrise
+    offset: '+00:00:00'
+  action:
+    service: switch.turn_off
+    entity_id: switch.front_porch

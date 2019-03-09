@@ -1,5 +1,4 @@
-# Lovelace UI configuration file
-
+#  Lovelace UI configuration file
 title: Home
 views:
   # Upstairs Area
@@ -32,7 +31,9 @@ views:
           - automation.front_door_open
           - automation.arriving_home_turn_on_light
           - automation.open_front_door_turn_on_light
-          - automation.notify_if_door_window_opened_for_3_minutes
+          - automation.notify_if_door_window_left_open
+          - automation.front_light_on_before_sunset
+          - automation.front_light_off_at_sunrise
       # Scripts
       - type: entities
         title: Scripts

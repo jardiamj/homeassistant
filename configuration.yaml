@@ -83,7 +83,7 @@ logbook:
 
 # Track devices connected to my router Actiontec (Frontier FIOS)
 device_tracker:
-  - platform: actiontec
+  - platform: quantum_gateway
     host: 192.168.1.1
     username: admin
     password: !secret router_password
@@ -145,14 +145,14 @@ binary_sensor: !include binary_sensors.yaml
 # Switches
 switch:
   - platform: tplink
-    host: 192.168.1.4
+    host: 192.168.1.156
 
 # Samsung TV
 media_player:
   - platform: samsungtv
-    host: 192.168.1.7
+    host: 192.168.1.159
     port: 8001
-    mac: e4:7d:bd:75:b7:40
+    mac: 5c:49:7d:63:98:34
     name: Living Room TV
 
 # Text to speech

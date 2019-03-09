@@ -1,0 +1,12 @@
+type: horizontal-stack
+cards:
+  - type: glance
+    title: Vacuum sample
+    entities:
+      - vacuum.xiaomi_vacuum_cleaner
+      - sensor.vacuum_battery
+  - type: glance
+    title: Vacuum Stack
+    entities:
+      - vacuum.xiaomi_vacuum_cleaner
+      - sensor.vacuum_fan_speed

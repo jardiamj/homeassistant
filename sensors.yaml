@@ -11,7 +11,7 @@
 ##############################################################################
 
 - platform: rest
-  resource: http://dell-inspiron/weewx/daily.json
+  resource: http://dell-inspiron.local/weewx/daily.json
   name: Weather Station
   json_attributes:
     - current
