@@ -41,8 +41,7 @@ Now, you can do the following:
 ```shell
 $ ssh your_user@raspberrypi
 $ sudo -u homeassistant -H -s
-$ cd
-$ cd .homeassistant
+$ cd ~/.homeassistant
 $ mkdir custom_components/
 $ cd custom_components/
 $ svn checkout https://github.com/jardiamj/homeassistant/trunk/custom_components/mcp23017

@@ -1,7 +1,6 @@
 """
 Support for binary sensor using MCP23017.
-For more details about this platform, please refer to the documentation at:
-### Link to docs ###.
+For more details about this platform, please refer to the README.md file.
 """
 import logging
 
