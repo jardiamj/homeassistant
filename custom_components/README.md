@@ -30,16 +30,22 @@ Requirements in Home Assistant are installed on the fly but it's good for you to
 
 ### Installing mcp23017 binary_sensor
 
-Place the mcp23017.py file inside ~/.homeassistant/custom_components/binary_sensor/
+Place the contents of mcp23017 directory inside ~/.homeassistant/custom_components/mcp23017
+The easiest way is using svn, if you don't have it installed you can install it with:
 
+```shell
+sudo apt install subversion
 ```
+Now, you can do the following:
+
+```shell
 $ ssh your_user@raspberrypi
 $ sudo -u homeassistant -H -s
 $ cd
 $ cd .homeassistant
-$ mkdir -p custom_components/binary_sensor
-$ cd custom_components/binary_sensor
-$ wget https://github.com/jardiamj/homeassistant/blob/master/custom_components/binary_sensor/mcp23017.py
+$ mkdir custom_components/
+$ cd custom_components/
+$ svn checkout https://github.com/jardiamj/homeassistant/trunk/custom_components/mcp23017
 ```
 To use the mcp23017 binary sensor in your installation, add the following to your configuration.yaml file:
 
