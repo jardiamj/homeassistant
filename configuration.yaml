@@ -85,7 +85,6 @@ logbook:
 device_tracker:
   - platform: quantum_gateway
     host: 192.168.1.1
-    username: admin
     password: !secret router_password
     new_device_defaults:
       track_new_devices: false
@@ -128,7 +127,7 @@ nest:
       #- 'eta'
       - 'humidity'
       #- 'operation_mode'
-      #- 'temperature'
+      - 'temperature'
       - 'target'
   binary_sensors:
     monitored_conditions:
@@ -143,9 +142,9 @@ nest:
 binary_sensor: !include binary_sensors.yaml
 
 # Switches
-switch:
-  - platform: tplink
-    host: 192.168.1.156
+# switch:
+#  - platform: tplink
+#    host: 192.168.1.156
 
 # Samsung TV
 media_player:

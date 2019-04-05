@@ -16,3 +16,10 @@ cards:
       - sensor.rain_rate
       - sensor.rain_today
       - sensor.utility_room_temperature
+
+  - type: history-graph
+    title: Indoor and Outdoor Temperature
+    entities:
+      - sensor.outside_temperature
+      - sensor.utility_room_temperature
+      - sensor.living_room_thermostat_temperature
