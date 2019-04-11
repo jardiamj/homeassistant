@@ -146,6 +146,11 @@ binary_sensor: !include binary_sensors.yaml
 #  - platform: tplink
 #    host: 192.168.1.156
 
+switch:
+  - platform: mcp23017
+    pins:
+      15: Test LED
+
 # Samsung TV
 media_player:
   - platform: samsungtv
