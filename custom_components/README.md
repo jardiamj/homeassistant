@@ -5,6 +5,7 @@ This is a repository for my custom components for Home Assistant.
 ## Custom Components
 - mcp23017 binary_sensor:
   mcp23017 is and I/O expander that I am using to connect my doors and windows sensors (reed sensors) to a Raspberry Pi running Home Assistant.
+- mcp23017 switch:
 
 ## Getting Started
 
@@ -59,6 +60,18 @@ binary_sensor:
       1: Kitchen Window
       2: Front Door
 ```
+To use the mcp23017 switch components in your installation, add the following to your configuration.yaml file:
+
+```yaml
+# Example configuration.yaml entry
+switch:
+  - platform: mcp23017
+    i2c_address: 0x20
+    pins:
+      11: Fan Office 
+      12: Light Desk 
+```
+
 {% configuration %}
 pins:
   description: List of used pins.
