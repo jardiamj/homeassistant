@@ -11,10 +11,6 @@ from homeassistant.components.binary_sensor import (
 from homeassistant.const import DEVICE_DEFAULT_NAME
 import homeassistant.helpers.config_validation as cv
 
-REQUIREMENTS = ['RPi.GPIO==0.6.5',
-                'adafruit-blinka==1.2.1',
-                'adafruit-circuitpython-mcp230xx==1.1.2']
-
 _LOGGER = logging.getLogger(__name__)
 
 CONF_INVERT_LOGIC = 'invert_logic'
