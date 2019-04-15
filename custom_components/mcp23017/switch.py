@@ -1,7 +1,4 @@
-"""
-Support for binary sensor using MCP23017.
-For more details about this platform, please refer to the README.md file.
-"""
+"""Support for switch sensor using I2C MCP23017 chip."""
 import logging
 
 import voluptuous as vol
@@ -53,7 +50,7 @@ def setup_platform(hass, config, add_entities, discovery_info=None):
 
 
 class MCP23017Switch(ToggleEntity):
-    """Representation of a  MCP23017 pin."""
+    """Representation of a  MCP23017 output pin."""
 
     def __init__(self, name, pin, invert_logic):
         """Initialize the pin."""

@@ -1,7 +1,4 @@
-"""
-Support for binary sensor using MCP23017.
-For more details about this platform, please refer to the README.md file.
-"""
+"""Support for binary sensor using I2C MCP23017 chip."""
 import logging
 
 import voluptuous as vol
@@ -74,7 +71,7 @@ class mcp23017BinarySensor(BinarySensorDevice):
 
     @property
     def should_poll(self):
-        """No polling needed."""
+        """Polling is needed."""
         return True
 
     @property
