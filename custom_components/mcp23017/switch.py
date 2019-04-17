@@ -10,13 +10,13 @@ import homeassistant.helpers.config_validation as cv
 
 _LOGGER = logging.getLogger(__name__)
 
-CONF_PULL_MODE = 'pull_mode'
-CONF_PINS = 'pins'
 CONF_INVERT_LOGIC = 'invert_logic'
 CONF_I2C_ADDRESS = 'i2c_address'
+CONF_PINS = 'pins'
+CONF_PULL_MODE = 'pull_mode'
 
 DEFAULT_INVERT_LOGIC = False
-DEFAULT_I2C_ADDRESS= 0x20
+DEFAULT_I2C_ADDRESS = 0x20
 
 _SWITCHES_SCHEMA = vol.Schema({
     cv.positive_int: cv.string,
@@ -25,7 +25,8 @@ _SWITCHES_SCHEMA = vol.Schema({
 PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend({
     vol.Required(CONF_PINS): _SWITCHES_SCHEMA,
     vol.Optional(CONF_INVERT_LOGIC, default=DEFAULT_INVERT_LOGIC): cv.boolean,
-    vol.Optional(CONF_I2C_ADDRESS, default=DEFAULT_I2C_ADDRESS): vol.Coerce(int),
+    vol.Optional(CONF_I2C_ADDRESS, default=DEFAULT_I2C_ADDRESS):
+    vol.Coerce(int),
 })
 
 
@@ -61,7 +62,7 @@ class MCP23017Switch(ToggleEntity):
         self._state = False
 
         self._pin.direction = digitalio.Direction.OUTPUT
-        self._pin.value = True if self._invert_logic else False
+        self._pin.value = True and not self._invert_logic
 
     @property
     def name(self):
@@ -80,12 +81,12 @@ class MCP23017Switch(ToggleEntity):
 
     def turn_on(self, **kwargs):
         """Turn the device on."""
-        self._pin.value = False if self._invert_logic else True
+        self._pin.value = not self._invert_logic
         self._state = True
         self.schedule_update_ha_state()
 
     def turn_off(self, **kwargs):
         """Turn the device off."""
-        self._pin.value = True if self._invert_logic else False
+        self._pin.value = True and not self._invert_logic
         self._state = False
         self.schedule_update_ha_state()
