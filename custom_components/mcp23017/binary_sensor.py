@@ -3,6 +3,7 @@ import logging
 
 import voluptuous as vol
 
+from . import get_mcp, read_input
 from homeassistant.components.binary_sensor import (
     BinarySensorDevice, PLATFORM_SCHEMA)
 from homeassistant.const import DEVICE_DEFAULT_NAME
@@ -35,16 +36,11 @@ PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend({
 async def async_setup_platform(hass, config, async_add_devices,
                                discovery_info=None):
     """Set up the MCP23017 binary sensors."""
-    import board
-    import busio
-    import adafruit_mcp230xx
-
     pull_mode = config.get(CONF_PULL_MODE)
     invert_logic = config.get(CONF_INVERT_LOGIC)
     i2c_address = config.get(CONF_I2C_ADDRESS)
 
-    i2c = busio.I2C(board.SCL, board.SDA)
-    mcp = adafruit_mcp230xx.MCP23017(i2c, address=i2c_address)
+    mcp = get_mcp(i2c_address)
 
     binary_sensors = []
     pins = config.get(CONF_PINS)
@@ -88,4 +84,4 @@ class MCP23017BinarySensor(BinarySensorDevice):
 
     async def async_update(self):
         """Update the GPIO state."""
-        self._state = self._pin.value
+        self._state = await read_input(self._pin)

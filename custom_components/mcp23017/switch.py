@@ -3,6 +3,7 @@ import logging
 
 import voluptuous as vol
 
+from . import get_mcp
 from homeassistant.components.switch import PLATFORM_SCHEMA
 from homeassistant.const import DEVICE_DEFAULT_NAME
 from homeassistant.helpers.entity import ToggleEntity
@@ -32,15 +33,10 @@ PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend({
 
 def setup_platform(hass, config, add_entities, discovery_info=None):
     """Set up the MCP23017 devices."""
-    import board
-    import busio
-    import adafruit_mcp230xx
-
     invert_logic = config.get(CONF_INVERT_LOGIC)
     i2c_address = config.get(CONF_I2C_ADDRESS)
 
-    i2c = busio.I2C(board.SCL, board.SDA)
-    mcp = adafruit_mcp230xx.MCP23017(i2c, address=i2c_address)
+    mcp = get_mcp(i2c_address)
 
     switches = []
     pins = config.get(CONF_PINS)
