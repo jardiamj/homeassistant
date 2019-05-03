@@ -21,6 +21,11 @@ system_health:
 # Show links to resources in log and frontend
 # introduction:
 
+logger:
+  default: info
+  logs:
+    homeassistant.components.mcp23017: debug
+
 # Enables the frontend
 frontend:
   themes: !include themes.yaml
@@ -146,10 +151,11 @@ binary_sensor: !include binary_sensors.yaml
 #  - platform: tplink
 #    host: 192.168.1.156
 
-switch:
-  - platform: mcp23017
-    pins:
-      15: Test LED
+#switch:
+#  - platform: mcp23017
+#    i2c_address: 0x21
+#    pins:
+#      15: Test LED
 
 # Samsung TV
 media_player:
@@ -161,7 +167,8 @@ media_player:
 
 # Text to speech
 tts:
-  - platform: google
+  - platform: google_translate
+    service_name: google_say
 
 # Cloud
 cloud:

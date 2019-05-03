@@ -1,8 +1,8 @@
-# - platform: rpi_gpio
+#- platform: rpi_gpio
 #  bouncetime: 500
 #  ports:
-#    2: Computer Room Window
-#    3: Bonus Room West Window
+#    17: Interrupt A 
+#    18: Interrupt B 
 #    4: Side Door
 #    5: Front Door
 #    6: Dining Room Window
@@ -16,6 +16,7 @@
 - platform: mcp23017
   i2c_address: 0x20
   scan_interval: 1
+  interrupt_port: 17
   pins:
     0: Computer Room Window
     1: Bonus Room West Window

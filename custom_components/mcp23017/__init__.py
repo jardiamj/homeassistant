@@ -28,6 +28,6 @@ def setup_input(pin):
     import digitalio
     pin.direction = digitalio.Direction.INPUT
 
-async def read_input(pin):
+def read_input(pin):
     return pin.value
     

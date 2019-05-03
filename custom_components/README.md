@@ -47,6 +47,12 @@ $ mkdir custom_components/
 $ cd custom_components/
 $ svn checkout https://github.com/jardiamj/homeassistant/trunk/custom_components/mcp23017
 ```
+I have implemented the hardware pin interrupts configured as mirrors. That means
+that you only need to connect one of the interrupt pins (port A or B) to a
+Raspberry Pi pin and it will trigger an interrupt whenever a binary sensor state
+changes.
+The interrupt_port option is the Raspberry Pi's actual GPIO number (not the pin
+number) to which the MCP23017 interrup pint is connected to.
 To use the mcp23017 binary sensor in your installation, add the following to your configuration.yaml file:
 
 ```yaml
@@ -54,7 +60,7 @@ To use the mcp23017 binary sensor in your installation, add the following to you
 binary_sensor:
   - platform: mcp23017
     i2c_address: 0x20
-    scan_interval: 1
+    interrupt_port: 17
     pins:
       0: Living Room Window
       1: Kitchen Window
