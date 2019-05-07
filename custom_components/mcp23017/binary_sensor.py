@@ -61,12 +61,23 @@ async def async_setup_platform(hass, config, async_add_devices,
 
     async_add_devices(binary_sensors, True)
 
-    mcp._write_u8(0x04, 0xFF) #Enable int on all A pins
-    mcp._write_u8(0x05, 0x3) #Enable int on all B pins
-    mcp._write_u8(0x08, 0x00) #Interrupt on any change
-    mcp._write_u8(0x09, 0x00) #Interrupt on any change
-    mcp._write_u8(0x0A, 0x40) #Set interrupt as open drain and mirrored
-    mcp._write_u8(0x0B, 0x40)
+    def int_config(pins):
+        gpintena = 0
+        gpintenb = 0
+        for pin in pins:
+            if pin < 8:
+                gpintena |= 1 << pin
+            else:
+                gpintenb |= 1 << pin - 8
+        return gpintena, gpintenb
+
+    GPINTENA, GPINTENB = int_config(pins)
+    mcp._write_u8(0x04, GPINTENA) #Enable int on port A
+    mcp._write_u8(0x05, GPINTENB) #Enable int on port B
+    #mcp._write_u8(0x08, 0x00) #Interrupt on any change
+    #mcp._write_u8(0x09, 0x00) #Interrupt on any change
+    mcp._write_u8(0x0A, 0x44) #Set interrupt as open drain and mirrored
+    mcp._write_u8(0x0B, 0x44)
     mcp._read_u8(0x10)
     mcp._read_u8(0x11)
 
@@ -74,14 +85,15 @@ async def async_setup_platform(hass, config, async_add_devices,
         capt_A = mcp._read_u8(0x10)
         capt_B = mcp._read_u8(0x11)
         for pin_num, name in pins.items():
-            _LOGGER.debug("Dispatching MCP23017: {} on port: {} ".format(DEVICE.format(i2c_address, pin_num),port))
+            _LOGGER.debug("Dispatching MCP23017: {} on port: {} ".format(
+                           DEVICE.format(i2c_address, pin_num),port))
             dispatcher_send(hass, DEVICE.format(i2c_address, pin_num))
 
     GPIO.setmode(GPIO.BCM)
-
     if interrupt:
         GPIO.setup(interrupt, GPIO.IN, GPIO.PUD_UP)
-        GPIO.add_event_detect(interrupt, GPIO.BOTH, callback=update_sensors, bouncetime=50)
+        GPIO.add_event_detect(interrupt, GPIO.FALLING, callback=update_sensors,
+                              bouncetime=10)
 
 
 class MCP23017BinarySensor(BinarySensorDevice):

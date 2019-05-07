@@ -153,7 +153,8 @@ binary_sensor: !include binary_sensors.yaml
 
 #switch:
 #  - platform: mcp23017
-#    i2c_address: 0x21
+#    i2c_address: 0x20
+#    invert_logic: False
 #    pins:
 #      15: Test LED
 

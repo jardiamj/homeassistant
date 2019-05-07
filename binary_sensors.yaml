@@ -15,7 +15,6 @@
 
 - platform: mcp23017
   i2c_address: 0x20
-  scan_interval: 1
   interrupt_port: 17
   pins:
     0: Computer Room Window
@@ -31,7 +30,7 @@
     
 - platform: mcp23017
   i2c_address: 0x21
-  scan_interval: 1
+  interrupt_port: 27
   pins:
     0: Dining Room Door
     1: Master Bedroom North Window
