@@ -22,9 +22,7 @@ system_health:
 # introduction:
 
 logger:
-  default: info
-  logs:
-    homeassistant.components.mcp23017: debug
+  default: debug
 
 # Enables the frontend
 frontend:

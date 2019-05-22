@@ -1,5 +1,7 @@
 title: Upstairs
 cards:
+  # Opened doors and windows
+  - !include cards/open_doors_and_windows.yaml
   # Doors Sensors
   - type: entities
     title: Doors

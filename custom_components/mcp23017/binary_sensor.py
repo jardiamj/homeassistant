@@ -3,7 +3,7 @@ import logging
 
 import voluptuous as vol
 
-from . import get_mcp, read_input
+from . import get_mcp
 from homeassistant.components import rpi_gpio
 from homeassistant.components.binary_sensor import (
     BinarySensorDevice, PLATFORM_SCHEMA)
