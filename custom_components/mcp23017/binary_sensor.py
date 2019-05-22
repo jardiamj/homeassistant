@@ -62,23 +62,16 @@ async def async_setup_platform(hass, config, async_add_devices,
     async_add_devices(binary_sensors, True)
 
     def int_config(pins):
-        gpintena = 0
-        gpintenb = 0
+        """Returns a 16 bit number with the bit set for each pin."""
+        gpinten = 0
         for pin in pins:
-            if pin < 8:
-                gpintena |= 1 << pin
-            else:
-                gpintenb |= 1 << pin - 8
-        return gpintena, gpintenb
+            gpinten |= 1 << pin
+        return gpinten
 
-    GPINTENA, GPINTENB = int_config(pins)
-    mcp._write_u8(0x04, GPINTENA) #Enable int on port A
-    mcp._write_u8(0x05, GPINTENB) #Enable int on port B
-    #mcp._write_u8(0x08, 0x00) #Interrupt on any change
-    #mcp._write_u8(0x09, 0x00) #Interrupt on any change
-    mcp._write_u8(0x0A, 0x44) #Set interrupt as open drain and mirrored
-    mcp._write_u8(0x0B, 0x44)
-    mcp._read_u8(0x10)
+    mcp.interrupt_enable = int_config(pins)
+    mcp.interrupt_configuration = 0x0000 # Interrupt on any change
+    mcp.io_control = 0x44 # Set interrupt as open drain and mirrored
+    mcp._read_u8(0x10) # Clear interrupts
     mcp._read_u8(0x11)
 
     def update_sensors(port):

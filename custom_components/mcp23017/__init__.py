@@ -8,12 +8,12 @@ DOMAIN = 'mcp23017'
 
 def get_mcp(i2c_address):
     """Returns an MCP23017 chip object."""
-    import adafruit_mcp230xx
+    from adafruit_mcp230xx.mcp23017 import MCP23017
     import board
     import busio
 
     i2c = busio.I2C(board.SCL, board.SDA)
-    mcp = adafruit_mcp230xx.MCP23017(i2c, address=i2c_address)
+    mcp = MCP23017(i2c, address=i2c_address)
     return mcp
 
 def get_pin(mcp, pin_number):
