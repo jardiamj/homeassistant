@@ -17,3 +17,7 @@ send_notification:
   sequence:
     - service: switch.turn_on
       entity_id: switch.front_porch
+
+renew_ssl:
+  sequence:
+    - service: shell_command.renew_ssl

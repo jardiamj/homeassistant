@@ -18,6 +18,11 @@ views:
         entities:
           - sensor.garbage_main
           - sensor.garbage_byweekly
+      - type: entities
+        show_header_toggle: false
+        title: HA Maintenance
+        entities:
+          - sensor.ssl_cert_expiry
 
   # Automations and Scripts
   - title: Automations
@@ -41,3 +46,4 @@ views:
         entities:
           - script.play_sound
           - script.send_notification
+          #- script.renew_ssl

@@ -22,7 +22,7 @@ system_health:
 # introduction:
 
 logger:
-  default: debug
+  default: info
 
 # Enables the frontend
 frontend:
@@ -152,7 +152,7 @@ binary_sensor: !include binary_sensors.yaml
 #switch:
 #  - platform: mcp23017
 #    i2c_address: 0x20
-#    invert_logic: False
+#    invert_logic: false
 #    pins:
 #      15: Test LED
 
@@ -168,6 +168,9 @@ media_player:
 tts:
   - platform: google_translate
     service_name: google_say
+
+#shell_command:
+#  renew_ssl: ~/certbot/certbot-auto renew --quiet --no-self-upgrade --standalone --preferred-challenges http-01
 
 # Cloud
 cloud:
