@@ -1,0 +1,29 @@
+# Open Doors and Windows
+type: entity-filter
+entities:
+  - binary_sensor.front_door
+  - binary_sensor.dining_room_door
+  - binary_sensor.master_bath_entry_door
+  - binary_sensor.dining_room_window
+  - binary_sensor.guest_bath_window
+  - binary_sensor.kitchen_window
+  - binary_sensor.master_bedroom_north_window
+  - binary_sensor.master_bath_east_window
+  - binary_sensor.master_bath_south_window
+  - binary_sensor.living_west_left_window
+  - binary_sensor.living_west_right_window
+  - binary_sensor.living_north_left_window
+  - binary_sensor.living_north_right_window
+  - binary_sensor.side_door
+  - binary_sensor.office_window
+  - binary_sensor.computer_room_window
+  - binary_sensor.guest_bedroom_window
+  - binary_sensor.bonus_room_west_window
+  - binary_sensor.utility_room_window
+  - binary_sensor.bonus_room_north_left_window
+  - binary_sensor.bonus_room_north_right_window 
+state_filter:
+  - 'on' 
+card:
+  type: glance
+  title: Open doors and windows

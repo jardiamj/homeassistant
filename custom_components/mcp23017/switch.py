@@ -55,10 +55,10 @@ class MCP23017Switch(ToggleEntity):
         self._name = name or DEVICE_DEFAULT_NAME
         self._pin = pin
         self._invert_logic = invert_logic
-        self._state = False
 
         self._pin.direction = digitalio.Direction.OUTPUT
-        self._pin.value = self._invert_logic
+        self._state = self._pin.value
+        #self._pin.value = self._invert_logic
 
     @property
     def name(self):
@@ -74,6 +74,11 @@ class MCP23017Switch(ToggleEntity):
     def is_on(self):
         """Return true if device is on."""
         return self._state
+
+    @property
+    def assumed_state(self):
+        """Return true if optimistic updates are used."""
+        return True
 
     def turn_on(self, **kwargs):
         """Turn the device on."""

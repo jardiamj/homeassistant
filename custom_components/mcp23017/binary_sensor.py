@@ -32,7 +32,7 @@ PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend({
     vol.Required(CONF_PINS): _SENSORS_SCHEMA,
     vol.Optional(CONF_INVERT_LOGIC, default=DEFAULT_INVERT_LOGIC): cv.boolean,
     vol.Optional(CONF_INTERRUPT): cv.positive_int,
-    vol.Optional(CONF_PULL_MODE, default=DEFAULT_PULL_MODE): cv.string,
+    vol.Optional(CONF_PULL_MODE, default=DEFAULT_PULL_MODE): vol.In(['UP', 'DOWN']),
     vol.Optional(CONF_I2C_ADDRESS, default=DEFAULT_I2C_ADDRESS):
     vol.Coerce(int),
 })
@@ -57,7 +57,8 @@ async def async_setup_platform(hass, config, async_add_devices,
     for pin_num, pin_name in pins.items():
         pin = mcp.get_pin(pin_num)
         binary_sensors.append(MCP23017BinarySensor(
-            pin_name, pin, pin_num, pull_mode, invert_logic, i2c_address))
+            pin_name, pin, pin_num, pull_mode, invert_logic,
+            i2c_address, interrupt))
 
     async_add_devices(binary_sensors, True)
 
@@ -68,22 +69,20 @@ async def async_setup_platform(hass, config, async_add_devices,
             gpinten |= 1 << pin
         return gpinten
 
-    mcp.interrupt_enable = int_config(pins)
-    mcp.interrupt_configuration = 0x0000 # Interrupt on any change
-    mcp.io_control = 0x44 # Set interrupt as open drain and mirrored
-    mcp._read_u8(0x10) # Clear interrupts
-    mcp._read_u8(0x11)
-
     def update_sensors(port):
-        capt_A = mcp._read_u8(0x10)
-        capt_B = mcp._read_u8(0x11)
-        for pin_num, name in pins.items():
+        for pin_num in mcp.int_flag:
             _LOGGER.debug("Dispatching MCP23017: {} on port: {} ".format(
                            DEVICE.format(i2c_address, pin_num),port))
             dispatcher_send(hass, DEVICE.format(i2c_address, pin_num))
+        mcp.clear_ints()
 
-    GPIO.setmode(GPIO.BCM)
     if interrupt:
+        mcp.interrupt_enable = int_config(pins)
+        mcp.interrupt_configuration = 0x0000 # Interrupt on any change
+        mcp.io_control = 0x44 # Set interrupt as open drain and mirrored
+        mcp.clear_ints() # Clear interrupts
+            
+        GPIO.setmode(GPIO.BCM)
         GPIO.setup(interrupt, GPIO.IN, GPIO.PUD_UP)
         GPIO.add_event_detect(interrupt, GPIO.FALLING, callback=update_sensors,
                               bouncetime=10)
@@ -92,7 +91,8 @@ async def async_setup_platform(hass, config, async_add_devices,
 class MCP23017BinarySensor(BinarySensorDevice):
     """Represent a binary sensor that uses MCP23017."""
 
-    def __init__(self, name, pin, pin_num, pull_mode, invert_logic, i2c_address):
+    def __init__(self, name, pin, pin_num, pull_mode, invert_logic,
+                 i2c_address, interrupt):
         """Initialize the MCP23017 binary sensor."""
         import digitalio
         self._name = name or DEVICE_DEFAULT_NAME
@@ -101,6 +101,7 @@ class MCP23017BinarySensor(BinarySensorDevice):
         self._pull_mode = pull_mode
         self._invert_logic = invert_logic
         self._i2c_address = i2c_address
+        self._interrupt = interrupt
         self._state = None
         self._pin.direction = digitalio.Direction.INPUT
         self._pin.pull = digitalio.Pull.UP
@@ -108,7 +109,7 @@ class MCP23017BinarySensor(BinarySensorDevice):
     @property
     def should_poll(self):
         """Return True if polling is needed."""
-        return False
+        if self._interrupt: return False
 
     @property
     def name(self):
@@ -129,8 +130,9 @@ class MCP23017BinarySensor(BinarySensorDevice):
         async def async_update_state():
             """Update sensor state."""
             await self.async_update_ha_state(True)
-                    
-        _LOGGER.debug("Adding signal: {}".format(DEVICE.format(self._i2c_address, self._pin_num)))
-        async_dispatcher_connect(self.hass,
+        if self._interrupt:            
+            _LOGGER.debug("Adding signal: {}".format(DEVICE.format(
+                            self._i2c_address, self._pin_num)))
+            async_dispatcher_connect(self.hass,
                                  DEVICE.format(self._i2c_address, self._pin_num),
                                  async_update_state)
