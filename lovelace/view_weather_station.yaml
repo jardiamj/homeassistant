@@ -3,6 +3,12 @@ icon: 'mdi:weather-partlycloudy'
 cards:
   - type: entities
     show_header_toggle: false
+    title: Chicken Coop
+    entities:
+      - cover.chicken_coop_door
+
+  - type: entities
+    show_header_toggle: false
     title: Weather Station
     entities:
       - sensor.outside_temperature

@@ -1,4 +1,4 @@
-#  Lovelace UI configuration file
+#Lovelace UI configuration file
 title: Home
 views:
   # Upstairs Area
@@ -7,7 +7,7 @@ views:
   - !include lovelace/view_Downstairs.yaml
   # Weather Station Data
   - !include lovelace/view_weather_station.yaml
-  # Tasks from todoist platform
+  # Tasks from todoist platform - FIX ME
   - title: Tasks
     icon: 'mdi:calendar-check'
     cards:
