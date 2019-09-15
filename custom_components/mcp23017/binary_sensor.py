@@ -19,6 +19,7 @@ CONF_INVERT_LOGIC = 'invert_logic'
 CONF_INTERRUPT = 'interrupt_port'
 CONF_PINS = 'pins'
 CONF_PULL_MODE = 'pull_mode'
+CONF_CHIPS = 'chips'
 
 DEFAULT_INVERT_LOGIC = False
 DEFAULT_I2C_ADDRESS = 0x20
@@ -28,13 +29,17 @@ _SENSORS_SCHEMA = vol.Schema({
     cv.positive_int: cv.string,
 })
 
-PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend({
+_CHIPS_SCHEMA = vol.Schema({
     vol.Required(CONF_PINS): _SENSORS_SCHEMA,
+    vol.Optional(CONF_I2C_ADDRESS, default=DEFAULT_I2C_ADDRESS): vol.Coerce(int),
+})
+
+PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend({
+    vol.Required(CONF_CHIPS): [_CHIPS_SCHEMA],
     vol.Optional(CONF_INVERT_LOGIC, default=DEFAULT_INVERT_LOGIC): cv.boolean,
     vol.Optional(CONF_INTERRUPT): cv.positive_int,
     vol.Optional(CONF_PULL_MODE, default=DEFAULT_PULL_MODE): vol.In(['UP', 'DOWN']),
-    vol.Optional(CONF_I2C_ADDRESS, default=DEFAULT_I2C_ADDRESS):
-    vol.Coerce(int),
+    #vol.Coerce(int),
 })
 
 DEVICE = 'mcp23017_binary_sensor_{}_{}_update'
@@ -47,18 +52,23 @@ async def async_setup_platform(hass, config, async_add_devices,
     pull_mode = config.get(CONF_PULL_MODE)
     invert_logic = config.get(CONF_INVERT_LOGIC)
     interrupt = config.get(CONF_INTERRUPT)
-    i2c_address = config.get(CONF_I2C_ADDRESS)
-
-    mcp = get_mcp(i2c_address)
 
     binary_sensors = []
-    pins = config.get(CONF_PINS)
+    mcpDicts = []
+    chips = config.get(CONF_CHIPS)
 
-    for pin_num, pin_name in pins.items():
-        pin = mcp.get_pin(pin_num)
-        binary_sensors.append(MCP23017BinarySensor(
-            pin_name, pin, pin_num, pull_mode, invert_logic,
-            i2c_address, interrupt))
+    for chip in chips:
+        i2c_address = chip.get(CONF_I2C_ADDRESS)
+        pins = chip.get(CONF_PINS)
+
+        mcp = get_mcp(i2c_address)
+        mcpDicts.append({'mcp': mcp, 'i2c_address': i2c_address, 'pins': pins})
+
+        for pin_num, pin_name in pins.items():
+            pin = mcp.get_pin(pin_num)
+            binary_sensors.append(MCP23017BinarySensor(
+                pin_name, pin, pin_num, pull_mode, invert_logic,
+                i2c_address, interrupt))
 
     async_add_devices(binary_sensors, True)
 
@@ -70,23 +80,34 @@ async def async_setup_platform(hass, config, async_add_devices,
         return gpinten
 
     def update_sensors(port):
-        for pin_num in mcp.int_flag:
-            _LOGGER.debug("Dispatching MCP23017: {} on port: {} ".format(
-                           DEVICE.format(i2c_address, pin_num),port))
-            dispatcher_send(hass, DEVICE.format(i2c_address, pin_num))
-        mcp.clear_ints()
+        # TODO: port is probably a bad name, most likely this can be the interrupt pin?
+        _LOGGER.debug("MCP23017 interrupt detected.")
+        for mcpDict in mcpDicts:
+            mcp = mcpDict.get("mcp")
+            i2c_address = mcpDict.get("i2c_address")
+            #intflag = mcp.int_flag
+            #for pin_num in intflag: # this gets all pins that triggered the interrupt, and then only updates the pins that actually changed interrupt, but this works unreliably
+            for pin_num in range(16): # update all pins instead
+                _LOGGER.debug("Dispatching MCP23017 change notification: {} on RPI pin: {} ".format(
+                               DEVICE.format(i2c_address, pin_num),port))
+                dispatcher_send(hass, DEVICE.format(i2c_address, pin_num))
+            mcp.clear_ints()
 
     if interrupt:
-        mcp.interrupt_enable = int_config(pins)
-        mcp.interrupt_configuration = 0x0000 # Interrupt on any change
-        mcp.io_control = 0x44 # Set interrupt as open drain and mirrored
-        mcp.clear_ints() # Clear interrupts
-            
+        for mcpDict in mcpDicts:
+            mcp = mcpDict.get("mcp")
+            pins = mcpDict.get("pins")
+            # do this for every mcp
+            mcp.interrupt_enable = int_config(pins)
+            mcp.interrupt_configuration = 0x0000 # Interrupt on any change
+            mcp.io_control = 0x44 # Set interrupt as open drain and mirrored
+            mcp.clear_ints() # Clear interrupts
+
+        # do this just once!
         GPIO.setmode(GPIO.BCM)
         GPIO.setup(interrupt, GPIO.IN, GPIO.PUD_UP)
         GPIO.add_event_detect(interrupt, GPIO.FALLING, callback=update_sensors,
                               bouncetime=10)
-
 
 class MCP23017BinarySensor(BinarySensorDevice):
     """Represent a binary sensor that uses MCP23017."""
