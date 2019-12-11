@@ -56,15 +56,26 @@ number) to which the MCP23017 interrup pint is connected to.
 To use the mcp23017 binary sensor in your installation, add the following to your configuration.yaml file:
 
 ```yaml
-# Example configuration.yaml entry
+# New Example configuration.yaml entry
 binary_sensor:
   - platform: mcp23017
-    i2c_address: 0x20
-    interrupt_port: 17
-    pins:
-      0: Living Room Window
-      1: Kitchen Window
-      2: Front Door
+    pull_mode: UP
+    invert_logic: true
+    interrupt_port: 12
+    chips:
+      - i2c_address: 0x20
+        pins:
+          8: pin8
+          9: pin9
+          10: pin10
+          11: pin11
+          12: pin12
+          13: pin13
+          14: pin14
+          15: pin15
+      - i2c_address: 0x24
+        pins:
+          8: prototypepcbpin8
 ```
 To use the mcp23017 switch components in your installation, add the following to your configuration.yaml file:
 
